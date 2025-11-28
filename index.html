@@ -1,0 +1,1205 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>AI as Your Marketing Engine - Companion Page</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta
+    name="description"
+    content="Companion resources for the AI as Your Marketing Engine session - AI stack, prompts, and the Nytro Value Proposition Engine."
+  />
+  <style>
+    :root {
+      --bg: #070b10;
+      --bg-alt: #0f151f;
+      --accent: #34c3ff;
+      --text: #f4f7fb;
+      --muted: #9aa4b8;
+      --card: #131b26;
+      --border: #222c3a;
+      --font-main: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI",
+        sans-serif;
+      --radius-lg: 16px;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      font-family: var(--font-main);
+      background: radial-gradient(circle at top left, #1a2535 0, #05070b 55%);
+      color: var(--text);
+      line-height: 1.6;
+    }
+
+    a {
+      color: var(--accent);
+      text-decoration: none;
+    }
+
+    a:hover,
+    a:focus {
+      text-decoration: underline;
+    }
+
+    .page {
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 32px 20px 64px;
+    }
+
+    header {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+      margin-bottom: 32px;
+    }
+
+    @media (min-width: 768px) {
+      header {
+        flex-direction: row;
+        justify-content: space-between;
+        align-items: flex-end;
+      }
+    }
+
+    .hero-title {
+      font-size: clamp(2.1rem, 3vw, 2.6rem);
+      font-weight: 700;
+      letter-spacing: 0.03em;
+    }
+
+    .hero-subtitle {
+      color: var(--muted);
+      margin-top: 8px;
+      max-width: 480px;
+    }
+
+    .hero-meta {
+      text-align: left;
+    }
+
+    .hero-tag {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 4px 10px;
+      border-radius: 999px;
+      background: rgba(52, 195, 255, 0.1);
+      font-size: 12px;
+      color: var(--accent);
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+    }
+
+    .hero-tag-dot {
+      width: 7px;
+      height: 7px;
+      border-radius: 999px;
+      background: var(--accent);
+    }
+
+    .logo {
+      height: 40px;
+      width: auto;
+      margin-bottom: 16px;
+      align-self: flex-start;
+    }
+
+    @media (min-width: 768px) {
+      .logo {
+        height: 50px;
+        margin-bottom: 0;
+        margin-right: 24px;
+        align-self: center;
+      }
+    }
+
+    nav {
+      margin-bottom: 32px;
+      border-radius: 999px;
+      border: 1px solid var(--border);
+      background: rgba(10, 15, 24, 0.9);
+      padding: 10px 14px;
+      overflow-x: auto;
+      white-space: nowrap;
+    }
+
+    nav ul {
+      display: flex;
+      gap: 18px;
+      list-style: none;
+      padding: 0;
+      margin: 0;
+      font-size: 14px;
+    }
+
+    nav a {
+      color: var(--muted);
+    }
+
+    nav a:hover {
+      color: var(--accent);
+    }
+
+    main {
+      display: flex;
+      flex-direction: column;
+      gap: 32px;
+    }
+
+    section {
+      border-radius: var(--radius-lg);
+      border: 1px solid var(--border);
+      background: linear-gradient(145deg, var(--bg-alt), #05070b);
+      padding: 20px 20px 22px;
+    }
+
+    section h2 {
+      font-size: 1.25rem;
+      margin-top: 0;
+      margin-bottom: 6px;
+    }
+
+    section p.lead {
+      color: var(--muted);
+      margin-top: 0;
+      margin-bottom: 14px;
+      font-size: 0.95rem;
+    }
+
+    .pill-label {
+      display: inline-block;
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      color: var(--muted);
+      margin-bottom: 4px;
+    }
+
+    /* AI stack grid */
+    .stack-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+      gap: 14px;
+      margin-top: 12px;
+    }
+
+    .stack-item {
+      padding: 14px 14px 12px;
+      border-radius: 12px;
+      border: 1px solid var(--border);
+      background: rgba(5, 7, 14, 0.8);
+    }
+
+    .stack-item-title {
+      font-size: 0.95rem;
+      font-weight: 600;
+      margin-bottom: 4px;
+    }
+
+    .stack-item-role {
+      font-size: 0.8rem;
+      color: var(--muted);
+      text-transform: uppercase;
+      letter-spacing: 0.09em;
+      margin-bottom: 6px;
+    }
+
+    .stack-item a {
+      font-size: 0.85rem;
+    }
+
+    .stack-item-desc {
+      font-size: 0.87rem;
+      color: var(--muted);
+      margin-top: 6px;
+    }
+
+    /* Prompt blocks */
+    .prompt-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 16px;
+      margin-top: 12px;
+    }
+
+    .prompt-card {
+      border-radius: 12px;
+      border: 1px solid var(--border);
+      background: rgba(5, 7, 14, 0.95);
+      padding: 14px 14px 12px;
+    }
+
+    .prompt-card h3 {
+      margin: 0 0 6px;
+      font-size: 0.96rem;
+    }
+
+    .prompt-card small {
+      color: var(--muted);
+      font-size: 0.78rem;
+    }
+
+    pre {
+      margin: 10px 0 0;
+      padding: 10px 10px 10px;
+      font-size: 0.78rem;
+      line-height: 1.45;
+      border-radius: 10px;
+      background: #05070b;
+      overflow-x: auto;
+      border: 1px solid #1f2632;
+    }
+
+    code {
+      font-family: ui-monospace, SFMonoRegular, Menlo, Monaco, Consolas,
+        "Liberation Mono", "Courier New", monospace;
+    }
+
+    /* Nytro CTA */
+    .cta {
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+    }
+
+    .cta-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-top: 4px;
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      padding: 9px 16px;
+      border-radius: 999px;
+      font-size: 0.9rem;
+      border: 1px solid transparent;
+      cursor: pointer;
+      text-decoration: none;
+      transition: background 0.15s ease, border-color 0.15s ease,
+        transform 0.08s ease;
+    }
+
+    .btn-primary {
+      background: var(--accent);
+      color: #05070b;
+      font-weight: 600;
+    }
+
+    .btn-primary:hover {
+      background: #8ad9ff;
+      transform: translateY(-1px);
+    }
+
+    .btn-ghost {
+      border-color: var(--border);
+      color: var(--muted);
+      background: transparent;
+    }
+
+    .btn-ghost:hover {
+      border-color: var(--accent);
+      color: var(--accent);
+      transform: translateY(-1px);
+    }
+
+    .cta-meta {
+      font-size: 0.85rem;
+      color: var(--muted);
+    }
+
+    /* Email Overlay */
+    .email-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(7, 11, 16, 0.95);
+      backdrop-filter: blur(8px);
+      -webkit-backdrop-filter: blur(8px);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 9999;
+      opacity: 1;
+      visibility: visible;
+      transition: opacity 0.3s ease, visibility 0.3s ease;
+    }
+
+    .email-overlay.hidden {
+      opacity: 0;
+      visibility: hidden;
+      pointer-events: none;
+    }
+
+    .overlay-content {
+      background: linear-gradient(145deg, var(--bg-alt), #05070b);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 32px;
+      max-width: 420px;
+      width: 90%;
+      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.5);
+      animation: overlaySlideIn 0.4s ease-out;
+    }
+
+    @keyframes overlaySlideIn {
+      from {
+        opacity: 0;
+        transform: translateY(-20px) scale(0.95);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+      }
+    }
+
+    .overlay-logo {
+      height: 40px;
+      width: auto;
+      display: block;
+      margin: 0 auto 24px;
+    }
+
+    .overlay-header h2 {
+      font-size: 1.5rem;
+      font-weight: 700;
+      text-align: center;
+      margin: 0 0 8px 0;
+      color: var(--text);
+    }
+
+    .overlay-header p {
+      text-align: center;
+      color: var(--muted);
+      margin: 0 0 24px 0;
+      font-size: 0.95rem;
+    }
+
+    .email-form {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+
+    .form-group {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .form-group label {
+      font-size: 0.9rem;
+      font-weight: 600;
+      color: var(--text);
+    }
+
+    .form-group input {
+      padding: 12px 16px;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      background: rgba(5, 7, 14, 0.8);
+      color: var(--text);
+      font-size: 1rem;
+      transition: border-color 0.2s ease;
+    }
+
+    .form-group input:focus {
+      outline: none;
+      border-color: var(--accent);
+    }
+
+    .submit-btn {
+      padding: 14px 24px;
+      background: var(--accent);
+      color: #05070b;
+      border: none;
+      border-radius: 8px;
+      font-size: 1rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: background 0.2s ease, transform 0.1s ease;
+      margin-top: 8px;
+    }
+
+    .submit-btn:hover {
+      background: #8ad9ff;
+      transform: translateY(-1px);
+    }
+
+    .submit-btn:disabled {
+      opacity: 0.6;
+      cursor: not-allowed;
+      transform: none;
+    }
+
+    .error-message {
+      color: #ff6b6b;
+      font-size: 0.9rem;
+      text-align: center;
+      padding: 8px;
+      border-radius: 6px;
+      background: rgba(255, 107, 107, 0.1);
+    }
+
+    .loading-message {
+      color: var(--accent);
+      font-size: 0.9rem;
+      text-align: center;
+      padding: 8px;
+    }
+
+    .overlay-footer {
+      margin-top: 24px;
+      text-align: center;
+    }
+
+    .overlay-footer .disclaimer {
+      font-size: 0.8rem;
+      color: var(--muted);
+      line-height: 1.4;
+    }
+
+    /* Blur main content when overlay is active */
+    .page.blurred {
+      filter: blur(4px);
+      pointer-events: none;
+      user-select: none;
+    }
+
+    /* Footer */
+    footer {
+      margin-top: 28px;
+      padding-top: 18px;
+      border-top: 1px solid var(--border);
+      font-size: 0.8rem;
+      color: var(--muted);
+      text-align: center;
+    }
+  </style>
+</head>
+<body>
+  <!-- Email Access Overlay -->
+  <div id="email-overlay" class="email-overlay">
+    <div class="overlay-content">
+      <div class="overlay-header">
+        <img src="public/logo_Nytro_white.png" alt="Nytro Marketing Logo" class="overlay-logo" />
+        <h2>Access the AI as Your Marketing Engine Session</h2>
+        <p>Enter your email address to view the session companion resources.</p>
+      </div>
+
+      <form id="email-form" class="email-form">
+        <div class="form-group">
+          <label for="email-input">Email Address</label>
+          <input
+            type="email"
+            id="email-input"
+            name="email"
+            placeholder="your.email@company.com"
+            required
+            autocomplete="email"
+          />
+        </div>
+
+        <button type="submit" class="submit-btn">Access Session</button>
+
+        <div id="error-message" class="error-message" style="display: none;"></div>
+        <div id="loading-message" class="loading-message" style="display: none;">
+          Processing your request...
+        </div>
+      </form>
+
+      <div class="overlay-footer">
+        <p class="disclaimer">
+          By accessing this content, you agree to receive marketing communications from Nytro Marketing.
+        </p>
+      </div>
+    </div>
+  </div>
+
+  <div class="page">
+    <header>
+      <img src="public/logo_Nytro_white.png" alt="Nytro Marketing Logo" class="logo" />
+      <div>
+        <div class="hero-tag">
+          <span class="hero-tag-dot"></span>
+          <span>Session Companion</span>
+        </div>
+        <h1 class="hero-title">AI as Your Marketing Engine</h1>
+        <p class="hero-subtitle">
+          Build, personalize, and scale B2B campaigns using a mix of strategic
+          marketing frameworks and a practical AI stack.
+        </p>
+      </div>
+      <div class="hero-meta">
+        <p class="pill-label">Presented by</p>
+        <p style="margin: 0; font-weight: 600;">Stan Berteloot</p>
+        <p style="margin: 2px 0 0; font-size: 0.85rem; color: var(--muted);">
+          Marketing consultant • Nytro Marketing
+        </p>
+      </div>
+    </header>
+
+    <nav aria-label="Section navigation">
+      <ul>
+        <li><a href="#overview">Overview</a></li>
+        <li><a href="#market-definition">Market definition</a></li>
+        <li><a href="#ai-stack">AI stack</a></li>
+        <li><a href="#prompts">Prompt library</a></li>
+        <li><a href="#nytro-vp">Nytro Value Proposition Engine</a></li>
+        <li><a href="#extras">Prospecting and content tools</a></li>
+      </ul>
+    </nav>
+
+    <main>
+      <!-- Overview -->
+      <section id="overview">
+        <p class="pill-label">Session overview</p>
+        <h2>From expertise plus AI to precision marketing</h2>
+        <p class="lead">
+          In this session, I walk you through the actual tools and strategy I use as a marketing consultant to design and execute go-to-market programs. You will see how I move from market definition, to value propositions, to concrete campaigns that generate leads and deals, using AI as a real "engine" rather than a gimmick.
+        </p>
+        <p class="lead">
+          I connect the dots between my AI toolbox, the frameworks I rely on (Jobs-to-Be-Done, value mapping, pain segmentation), and the real workflows that turn all this into pipeline. The goal is simple: show you how to combine human expertise and AI so that you can do more, with more precision, in less time.
+        </p>
+        <ul style="margin: 8px 0 0; padding-left: 18px; font-size: 0.9rem;">
+          <li>Map jobs to be done and pain clusters before you write copy.</li>
+          <li>Use AI for research, list building, and content at scale.</li>
+          <li>Feed everything into a CRM centric funnel and track impact.</li>
+        </ul>
+      </section>
+
+      <!-- Market definition -->
+      <section id="market-definition">
+        <p class="pill-label">Market definition</p>
+        <h2>Market definition vs "what's happening in my industry?"</h2>
+        <p class="lead">
+          Most marketers start with the wrong questions: "What is happening in my industry?", "What are the big trends this year?", "Who are the major vendors?" Those are analyst questions. They give you a landscape, not a market definition. When you want to build a real lead generation machine, you need to define your market in terms of jobs to be done, pains that actually hurt, and segments where those pains are intense enough to drive action.
+        </p>
+        <p class="lead">
+          In practice, that means starting from the buyer's daily reality, not a category label; mapping specific pain patterns, not generic persona bios; identifying pockets of high urgency where a narrowly defined offer will resonate. AI helps here by processing large amounts of material quickly, but it still needs a sharp question. My prompts focus on jobs, pains, and impact, then force the model to cluster segments by intensity instead of demographics.
+        </p>
+      </section>
+
+      <!-- AI stack -->
+      <section id="ai-stack">
+        <p class="pill-label">Tooling</p>
+        <h2>My AI stack</h2>
+        <p class="lead">
+          My AI toolbox is deliberately small and practical. A few tools that I know very well are worth more than a bloated stack no one uses.
+        </p>
+        <p class="lead">
+          OpenAI is my primary workbench. It is where I run agentic research, check code, and rely on custom GPTs specialized by task: market studies, value proposition mapping, content frameworks, email generation, and more.
+        </p>
+        <p class="lead">
+          I complement this with tools built for deep document-centric research. NotebookLM, for example, lets me load client assets, competitive decks, transcripts, and notes into a single workspace. It becomes a briefing room where I can interrogate sources, not just the open web. Combined with ChatGPT, this gives me a research system that is fast but still grounded in real material.
+        </p>
+        <p class="lead">
+          The rest of my stack is organized around the lifecycle of a campaign: defining markets, segments, and value propositions; identifying and enriching leads; activating those leads via events and outbound; repurposing recordings into a content engine. Each tool has a clear job. AI is not a black box; it is a set of capabilities that plug into specific steps of a marketing process I already control.
+        </p>
+
+        <div class="stack-grid">
+          <div class="stack-item">
+            <div class="stack-item-role">Strategy and research</div>
+            <div class="stack-item-title">
+              ChatGPT (Projects, custom GPTs, deep research)
+            </div>
+            <a href="https://chatgpt.com" target="_blank" rel="noreferrer">
+              chatgpt.com
+            </a>
+            <p class="stack-item-desc">
+              Day to day, ChatGPT is my closest colleague. I use it to brainstorm, stress-test ideas, ask for constructive criticism, and even outsource chunks of project work where structure matters more than originality. That level of collaboration is only possible because I have invested time in learning how to master the tool: writing layered prompts that clarify context, role, goal, and constraints; building custom GPTs and Projects aligned with specific jobs; iterating systematically instead of treating each response as final.
+            </p>
+          </div>
+
+          <div class="stack-item">
+            <div class="stack-item-role">Competitive research</div>
+            <div class="stack-item-title">Perplexity</div>
+            <a href="https://www.perplexity.ai" target="_blank" rel="noreferrer">
+              perplexity.ai
+            </a>
+            <p class="stack-item-desc">
+              Deep research runs that map competitors, categories, and buying
+              triggers.
+            </p>
+          </div>
+
+          <div class="stack-item">
+            <div class="stack-item-role">Value proposition engine</div>
+            <div class="stack-item-title">
+              Nytro Value Proposition Generator
+            </div>
+            <a
+              href="https://value-proposition.nytromarketing.com"
+              target="_blank"
+              rel="noreferrer"
+            >
+              value-proposition.nytromarketing.com
+            </a>
+            <p class="stack-item-desc">
+              Custom app built on the Value Mapping framework and jobs to be
+              done to generate segment specific value propositions and a
+              prospect universe.
+            </p>
+          </div>
+
+          <div class="stack-item">
+            <div class="stack-item-role">Lead generation assessment</div>
+            <div class="stack-item-title">
+              Nytro Lead Gen Health Check
+            </div>
+            <a
+              href="https://lead-gen-assessment.nytromarketing.com"
+              target="_blank"
+              rel="noreferrer"
+            >
+              lead-gen-assessment.nytromarketing.com
+            </a>
+            <p class="stack-item-desc">
+              AI-powered assessment that scores your marketing across 7 key areas
+              and provides personalized recommendations to find pipeline gaps.
+            </p>
+          </div>
+
+          <div class="stack-item">
+            <div class="stack-item-role">Prospecting automation</div>
+            <div class="stack-item-title">PhantomBuster</div>
+            <a
+              href="https://phantombuster.com"
+              target="_blank"
+              rel="noreferrer"
+            >
+              phantombuster.com
+            </a>
+            <p class="stack-item-desc">
+              Scrape LinkedIn events, automate invitations, and push enriched
+              leads to CRM.
+            </p>
+          </div>
+
+          <div class="stack-item">
+            <div class="stack-item-role">Data enrichment</div>
+            <div class="stack-item-title">Apollo.io</div>
+            <a href="https://www.apollo.io" target="_blank" rel="noreferrer">
+              apollo.io
+            </a>
+            <p class="stack-item-desc">
+              Enrich lists, validate emails, and segment accounts by firmographic
+              data.
+            </p>
+          </div>
+
+          <div class="stack-item">
+            <div class="stack-item-role">Social and events</div>
+            <div class="stack-item-title">LinkedIn and Sales Navigator</div>
+            <a
+              href="https://www.linkedin.com/sales"
+              target="_blank"
+              rel="noreferrer"
+            >
+              linkedin.com/sales
+            </a>
+            <p class="stack-item-desc">
+              Source ICP contacts, host LinkedIn events, and nurture buyers with
+              relevant content.
+            </p>
+          </div>
+
+          <div class="stack-item">
+            <div class="stack-item-role">Editing and clipping</div>
+            <div class="stack-item-title">Descript</div>
+            <a href="https://www.descript.com" target="_blank" rel="noreferrer">
+              descript.com
+            </a>
+            <p class="stack-item-desc">
+              Clean transcripts, remove filler, and cut video or audio as easily
+              as editing text.
+            </p>
+          </div>
+
+          <div class="stack-item">
+            <div class="stack-item-role">Voice and dubbing</div>
+            <div class="stack-item-title">ElevenLabs</div>
+            <a href="https://elevenlabs.io" target="_blank" rel="noreferrer">
+              elevenlabs.io
+            </a>
+            <p class="stack-item-desc">
+              Clone voice, dub videos in multiple languages, and create narrated
+              assets.
+            </p>
+          </div>
+
+          <div class="stack-item">
+            <div class="stack-item-role">AI video outreach</div>
+            <div class="stack-item-title">Synthesia</div>
+            <a
+              href="https://www.synthesia.io"
+              target="_blank"
+              rel="noreferrer"
+            >
+              synthesia.io
+            </a>
+            <p class="stack-item-desc">
+              Record personalized AI videos at scale for outbound and onboarding
+              flows.
+            </p>
+          </div>
+
+          <div class="stack-item">
+            <div class="stack-item-role">Workflow automation</div>
+            <div class="stack-item-title">Make.com</div>
+            <a href="https://www.make.com" target="_blank" rel="noreferrer">
+              make.com
+            </a>
+            <p class="stack-item-desc">
+              Connect forms, events, CRM, and AI services into repeatable
+              no code workflows.
+            </p>
+          </div>
+
+          <div class="stack-item">
+            <div class="stack-item-role">Soundtracks and jingles</div>
+            <div class="stack-item-title">Udio and Suno</div>
+            <a href="https://www.udio.com" target="_blank" rel="noreferrer">
+              udio.com
+            </a>
+            <span style="font-size: 0.8rem;"> &nbsp;|&nbsp; </span>
+            <a href="https://www.suno.ai" target="_blank" rel="noreferrer">
+              suno.ai
+            </a>
+            <p class="stack-item-desc">
+              Generate background music, podcast idents, and sonic branding from
+              text prompts.
+            </p>
+          </div>
+
+          <div class="stack-item">
+            <div class="stack-item-role">CRM and funnel</div>
+            <div class="stack-item-title">HubSpot (or similar CRM)</div>
+            <a href="https://www.hubspot.com" target="_blank" rel="noreferrer">
+              hubspot.com
+            </a>
+            <p class="stack-item-desc">
+              Central place to track contacts, deals, scoring, and the full
+              marketing funnel.
+            </p>
+          </div>
+        </div>
+      </section>
+
+      <!-- Prompt library -->
+      <section id="prompts">
+        <p class="pill-label">Prompt library</p>
+        <h2>Framework prompts you can reuse</h2>
+        <p class="lead">
+          Understanding the market, your competition, and how other tools position themselves is essential to writing relevant marketing content. You need to see how others describe the problem, what promises they make, and what they leave out. Doing that kind of deep search manually is slow and error-prone. This is one of the places where ChatGPT shines, especially when you ask it to write the research prompts for you first.
+        </p>
+        <p class="lead">
+          Increasingly, I brief ChatGPT to act as a competitive intelligence analyst and to design its own search strategy before it returns any conclusions. The flow looks like this: Ask ChatGPT to propose a research plan for a specific question, approve or refine the plan, let the model execute it step by step, then turn the output into visual summaries. Instead of surfing for hours and copy-pasting into a document, you get a repeatable research engine that respects constraints and gives you structured, reusable insight.
+        </p>
+        <p class="lead">
+          Use these prompts as starting points. Replace bracketed sections with your own product, audience, or channel.
+        </p>
+
+        <div class="prompt-grid">
+          <!-- Prompt 1 -->
+          <div class="prompt-card">
+            <h3>Universal prompt structure</h3>
+            <small>Use this to brief any AI model with clarity.</small>
+            <pre><code>CONTEXT: [Explain what we are trying to do and for whom.]
+
+ROLE: [Specify the expertise or persona the AI should adopt.]
+
+GOAL: [State the concrete end result you want.]
+
+CONSTRAINTS:
+- [Word limits]
+- [Tone rules]
+- [Banned phrases or assumptions]
+
+INPUTS:
+- [Key facts or data the model must use]
+- [Links, bullets, transcripts, or notes]
+- [What it is allowed or not allowed to invent]
+
+PROCESS:
+1) [How you want the model to think.]
+2) [What to analyze or compare.]
+3) [How to build the final answer.]
+
+OUTPUT FORMAT:
+[Specify exact structure - for example 5 bullets, a 3 part email, a table, or a 1 page outline.]</code></pre>
+          </div>
+
+          <!-- Prompt 2 -->
+          <div class="prompt-card">
+            <h3>Job to be done discovery</h3>
+            <small>Clarify why buyers actually hire your product.</small>
+            <pre><code>"Here is my product:
+[Paste a short description of your actual product.]
+
+You are an experienced B2B marketer and market analyst.
+Your task is to clearly define the core job to be done
+that motivates users to adopt this tool or service.
+
+Focus only on:
+- The user's desired business outcome
+- The pain they are trying to avoid
+- The impact on revenue, risk, or efficiency
+
+Do not describe product features or solutions.
+
+Describe each job in the user's own voice, in language that
+reflects urgency, risk, or frustration.
+
+Deliver 4 to 6 variants of the job, each phrased from the
+user's perspective in one short sentence."</code></pre>
+          </div>
+
+          <!-- Prompt 3 -->
+          <div class="prompt-card">
+            <h3>Pain intensity clusters</h3>
+            <small>Turn vague personas into high intent segments.</small>
+            <pre><code>"Using the jobs to be done we just defined, identify 8 to 10
+user groups who experience this job most intensely.
+
+For each group, describe:
+- The specific pain they feel in day to day work
+- How frequently the pain shows up
+- The operational or financial consequences of not solving it
+
+Return your answer as a table with columns:
+[Segment name] - [Daily reality] - [Pain pattern] - [Business impact]."</code></pre>
+          </div>
+
+          <!-- Prompt 4 -->
+          <div class="prompt-card">
+            <h3>Deep search prompt - AI text to audio tools</h3>
+            <small>Example used for the VoiceStream market study.</small>
+            <pre><code>"You are an AI powered competitive intelligence analyst.
+
+Your task is to run a comprehensive market study on software
+tools released within the last two years that allow B2B
+marketing directors to:
+- Convert written text into audio content
+- Generate AI narrated podcast style episodes
+- Produce short audio briefings from blogs or newsletters
+- Automate or streamline text to audio workflows
+
+Only include tools that cost 50 dollars per month or less.
+
+Model your output as a Value Mapping Competitive Analysis
+Report for the product [Your product name and description].
+
+Structure the report in four parts:
+1) Competitor list and pricing
+2) Target segments and core jobs to be done
+3) Differentiating features, strengths, and gaps
+4) Positioning recommendations for [Your product]."</code></pre>
+          </div>
+        </div>
+      </section>
+
+      <!-- Nytro Value Proposition Engine -->
+      <section id="nytro-vp">
+        <p class="pill-label">Nytro marketing</p>
+        <h2>The Nytro Value Proposition Engine</h2>
+        <div class="cta">
+          <p class="lead">
+            The Value Proposition Engine turns a short product description into a
+            full value mapping report: customer jobs, pains, gains, buying
+            triggers, and a LinkedIn ready prospect universe. It is built on
+            Strategizer style value mapping and jobs to be done.
+          </p>
+          <div class="cta-actions">
+            <a
+              class="btn btn-primary"
+              href="https://value-proposition.nytromarketing.com"
+              target="_blank"
+              rel="noreferrer"
+            >
+              Open the Value Proposition Engine
+            </a>
+            <a
+              class="btn btn-ghost"
+              href="mailto:stan@nytromarketing.com?subject=Nytro%20Value%20Proposition%20Engine%20feedback"
+            >
+              Share feedback on the tool
+            </a>
+          </div>
+          <p class="cta-meta">
+            Recommended workflow:
+            <br />
+            1. Run the engine for one ICP and segment.  
+            2. Review the canvas with real customer insight.  
+            3. Use the exported value propositions to brief your copy, ads, and
+            SDR sequences.
+          </p>
+        </div>
+      </section>
+
+      <!-- Extras: prospecting and content -->
+      <section id="extras">
+        <p class="pill-label">Execution</p>
+        <h2>Events, LinkedIn, and lead generation</h2>
+        <p class="lead">
+          Events are one of the most underused and under-analyzed sources of high-intent leads. When an event is hosted on LinkedIn, you can see who has registered or attended. Many of these attendees are clearly interested in the problem space of the event topic, which makes them a natural audience for similar solutions.
+        </p>
+        <p class="lead">
+          In my workflow, I use LinkedIn attendee lists as a starting point, not an endpoint: export or scrape the event attendees, enrich them using tools like PhantomBuster and Apollo.io, push the enriched contacts into a CRM like HubSpot, tag them by event theme, industry, and job to be done. Physical events are equally powerful. One of the "hacks" I show uses Make.com combined with Gemini to process photos of badges collected at an event, extract names and companies, and automatically build a structured lead list. The principle is simple: every event, physical or virtual, should become both a lead source and a content source. AI helps you unlock both.
+        </p>
+
+        <h2>LinkedIn Live as a content engine</h2>
+        <p class="lead">
+          Most startups struggle with content. They know they need awareness and credibility, but they do not have the time or resources to maintain a polished blog, podcast, and webinar series in parallel. One of the most efficient ways to solve this is to run regular LinkedIn Live sessions. A single live event delivers a list of attendees you can nurture and creates a rich recording that can be chopped into multiple assets.
+        </p>
+        <p class="lead">
+          With AI tools in the loop, you can turn each live session into a transcript cleaned and edited for clarity, a blog post or article structured around the key insights, short clips for social media, and an audio briefing or podcast episode. Instead of asking "What should we post this week?", you build a repeatable rhythm: host an event, process it with AI, publish derivatives, feed the CRM.
+        </p>
+
+        <h2>Editing, post-production, and Descript</h2>
+        <p class="lead">
+          Descript has been a game changer in my podcast and video editing workflow. Instead of cutting on a timeline, you edit audio and video the same way you edit a Word document: copy, paste, move, and delete text. The media follows the text edits. AI layers on top of this with automatic transcription of your recordings, automatic removal of filler words and hesitations, one-click generation of short clips and highlights, and script export you can reuse in newsletters and LinkedIn posts.
+        </p>
+        <p class="lead">
+          This means a one-hour webinar or LinkedIn Live is no longer a one-off event. It becomes a content reservoir you can systematically mine with AI-assisted tools.
+        </p>
+
+        <h2>From research to high-impact emails</h2>
+        <p class="lead">
+          The final step in the workflow is execution. All the research on jobs to be done, pains, and segments is only useful if it shows up in what prospects actually receive from you. In my process, the output from the research phase is pasted directly into a structured email-writing prompt. That prompt forces the model to use the jobs and pains we have identified, in the buyer's own language, respect tight constraints on length and structure, and avoid vague, generic claims while focusing on outcomes.
+        </p>
+        <p class="lead">
+          The result is a short, extremely focused email that adheres to the brief and speaks clearly to a specific pain, for a specific segment, with a specific call to action. I show an example of such an email that follows the prompt exactly and can be sent with minimal editing.
+        </p>
+      </section>
+    </main>
+
+    <footer>
+      <p>
+        This page is a static companion to the "AI as Your Marketing Engine"
+        session. Feel free to adapt, fork, or embed in your own notes.
+      </p>
+    </footer>
+  </div>
+
+  <!-- Scripts -->
+  <script src="config.js"></script>
+  <script>
+    class EmailOverlay {
+      constructor() {
+        this.overlay = document.getElementById('email-overlay');
+        this.form = document.getElementById('email-form');
+        this.emailInput = document.getElementById('email-input');
+        this.submitBtn = document.querySelector('.submit-btn');
+        this.errorMessage = document.getElementById('error-message');
+        this.loadingMessage = document.getElementById('loading-message');
+        this.page = document.querySelector('.page');
+
+        this.init();
+      }
+
+      init() {
+        // Check if user has already accessed the page
+        if (this.hasAccess()) {
+          this.hideOverlay();
+          return;
+        }
+
+        // Show overlay initially
+        this.showOverlay();
+
+        // Bind form submission
+        this.form.addEventListener('submit', (e) => this.handleSubmit(e));
+
+        // Handle Enter key in input
+        this.emailInput.addEventListener('keypress', (e) => {
+          if (e.key === 'Enter') {
+            e.preventDefault();
+            this.handleSubmit(e);
+          }
+        });
+      }
+
+      showOverlay() {
+        this.overlay.classList.remove('hidden');
+        this.page.classList.add('blurred');
+        this.emailInput.focus();
+      }
+
+      hideOverlay() {
+        this.overlay.classList.add('hidden');
+        this.page.classList.remove('blurred');
+      }
+
+      hasAccess() {
+        return localStorage.getItem('emailAccessGranted') === 'true';
+      }
+
+      grantAccess() {
+        localStorage.setItem('emailAccessGranted', 'true');
+        this.hideOverlay();
+      }
+
+      showError(message) {
+        this.errorMessage.textContent = message;
+        this.errorMessage.style.display = 'block';
+        this.loadingMessage.style.display = 'none';
+        this.submitBtn.disabled = false;
+        this.submitBtn.textContent = 'Access Session';
+      }
+
+      showLoading() {
+        this.errorMessage.style.display = 'none';
+        this.loadingMessage.style.display = 'block';
+        this.submitBtn.disabled = true;
+        this.submitBtn.textContent = 'Processing...';
+      }
+
+      async handleSubmit(e) {
+        e.preventDefault();
+
+        const email = this.emailInput.value.trim();
+
+        if (!this.validateEmail(email)) {
+          this.showError('Please enter a valid email address.');
+          return;
+        }
+
+        this.showLoading();
+
+        try {
+          // Check if email is from allowed domain
+          const isAllowedDomain = this.isAllowedDomain(email);
+
+          if (isAllowedDomain) {
+            // Grant immediate access for nytromarketing.com emails
+            this.grantAccess();
+          } else {
+            // Create HubSpot contact for other emails
+            const success = await this.createHubSpotContact(email);
+            if (success) {
+              this.grantAccess();
+            } else {
+              this.showError('There was an error processing your request. Please try again.');
+            }
+          }
+        } catch (error) {
+          console.error('Error processing email:', error);
+          this.showError('There was an error processing your request. Please try again.');
+        }
+      }
+
+      validateEmail(email) {
+        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        return emailRegex.test(email);
+      }
+
+      isAllowedDomain(email) {
+        const domain = email.split('@')[1];
+        return domain === window.CONFIG?.ALLOWED_DOMAIN;
+      }
+
+      async createHubSpotContact(email) {
+        try {
+          // First check if contact already exists
+          const existingContact = await this.searchHubSpotContact(email);
+          if (existingContact) {
+            console.log('Contact already exists, updating...');
+            return await this.updateHubSpotContact(existingContact.id);
+          }
+
+          // Create new contact via backend proxy
+          const response = await fetch(`${window.CONFIG?.BACKEND_API_URL}${window.CONFIG?.BACKEND_API_ENDPOINTS.CREATE_CONTACT}`, {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+              email: email,
+              notes: 'Live Dec 11 2025'
+            })
+          });
+
+          if (!response.ok) {
+            const errorData = await response.text();
+            console.error('Backend API error:', response.status, errorData);
+            throw new Error(`HTTP error! status: ${response.status}`);
+          }
+
+          const data = await response.json();
+          console.log('HubSpot contact created:', data);
+          return true;
+        } catch (error) {
+          console.error('Error creating HubSpot contact:', error);
+          return false;
+        }
+      }
+
+      async searchHubSpotContact(email) {
+        try {
+          const response = await fetch(`${window.CONFIG?.BACKEND_API_URL}${window.CONFIG?.BACKEND_API_ENDPOINTS.SEARCH_CONTACT}`, {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+              email: email
+            })
+          });
+
+          if (!response.ok) {
+            return null;
+          }
+
+          const data = await response.json();
+          return data.contact || null;
+        } catch (error) {
+          console.error('Error searching HubSpot contact:', error);
+          return null;
+        }
+      }
+
+      async updateHubSpotContact(contactId, email = null) {
+        try {
+          const response = await fetch(`${window.CONFIG?.BACKEND_API_URL}${window.CONFIG?.BACKEND_API_ENDPOINTS.UPDATE_CONTACT}`, {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+              contactId: contactId,
+              email: email,
+              notes: 'Live Dec 11 2025'
+            })
+          });
+
+          if (!response.ok) {
+            throw new Error(`Update failed with status: ${response.status}`);
+          }
+
+          const data = await response.json();
+          console.log('HubSpot contact updated:', contactId);
+          return true;
+        } catch (error) {
+          console.error('Error updating HubSpot contact:', error);
+          return false;
+        }
+      }
+    }
+
+    // Initialize the overlay when the page loads
+    document.addEventListener('DOMContentLoaded', () => {
+      new EmailOverlay();
+    });
+  </script>
+</body>
+</html>
