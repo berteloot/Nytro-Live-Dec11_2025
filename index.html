@@ -417,6 +417,14 @@
       border-color: var(--accent);
     }
 
+    .form-hint {
+      display: block;
+      margin-top: 6px;
+      font-size: 0.8rem;
+      color: var(--muted);
+      line-height: 1.3;
+    }
+
     .submit-btn {
       padding: 14px 24px;
       background: var(--accent);
@@ -503,10 +511,11 @@
             type="email"
             id="email-input"
             name="email"
-            placeholder="your.email@company.com"
+            placeholder="your.name@company.com"
             required
             autocomplete="email"
           />
+          <small class="form-hint">Please use your professional work email for better networking opportunities</small>
         </div>
 
         <button type="submit" class="submit-btn">Access Session</button>
