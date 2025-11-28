@@ -183,27 +183,10 @@ async function createContactNote(contactId, noteContent) {
     const noteData = await noteResponse.json();
     console.log('Note created successfully:', noteData.id);
 
-    // Try to associate the note with the contact
-    // Use the simpler associations API
-    try {
-      const associationResponse = await fetch(`${HUBSPOT_BASE_URL}/crm/v4/objects/notes/${noteData.id}/associations/contacts/${contactId}`, {
-        method: 'PUT',
-        headers: {
-          'Authorization': `Bearer ${HUBSPOT_API_KEY}`
-        }
-      });
-
-      if (associationResponse.ok) {
-        console.log('Note associated with contact successfully');
-      } else {
-        const errorText = await associationResponse.text();
-        console.error('Note association failed:', associationResponse.status, errorText);
-        console.warn('Note created but not associated with contact - you may need to link it manually in HubSpot');
-      }
-    } catch (assocError) {
-      console.error('Association attempt failed:', assocError);
-      console.warn('Note created but association failed - check HubSpot for unassociated notes');
-    }
+    // Note: Association with contact is not working yet
+    // The note exists in HubSpot but needs manual association
+    // TODO: Fix the association API call
+    console.log('Note created but association to contact needs to be done manually in HubSpot');
 
     return noteData;
 
