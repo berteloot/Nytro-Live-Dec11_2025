@@ -65,25 +65,25 @@ app.post('/api/hubspot/create-contact', async (req, res) => {
       return res.status(500).json({ error: 'HubSpot API key not configured' });
     }
 
-    const noteContent = notes || 'Live December 11, 2025';
+    const noteContent = notes || 'Live December 11, 2025 - Web';
 
     // Step 1: Ensure contact exists (create if needed)
     const contactResult = await ensureContactExists(email);
 
-    // Step 2: Create a note associated with the contact
-    const noteResult = await createContactNote(contactResult.contactId, noteContent);
+    // Step 2: Create an engagement (activity) associated with the contact
+    const engagementResult = await createContactEngagement(contactResult.contactId, noteContent);
 
-    console.log('Contact ensured and note created:', {
+    console.log('Contact ensured and engagement created:', {
       contactId: contactResult.contactId,
-      noteId: noteResult.id,
+      engagementId: engagementResult.engagement.id,
       action: contactResult.action
     });
 
     res.json({
       contactId: contactResult.contactId,
-      noteId: noteResult.id,
+      engagementId: engagementResult.engagement.id,
       action: contactResult.action,
-      noteCreated: true
+      engagementCreated: true
     });
 
   } catch (error) {
@@ -154,44 +154,50 @@ async function ensureContactExists(email) {
   }
 }
 
-// Helper function to create a note associated with a contact
-async function createContactNote(contactId, noteContent) {
+// Helper function to create an engagement (activity) for a contact
+async function createContactEngagement(contactId, engagementContent) {
   try {
-    console.log('Creating note for contact:', contactId, 'with content:', noteContent);
+    console.log('Creating engagement for contact:', contactId, 'with content:', engagementContent);
 
-    // Create the note first
-    const noteResponse = await fetch(`${HUBSPOT_BASE_URL}/crm/v3/objects/notes`, {
+    // Create an engagement (activity) using the legacy API
+    // This automatically associates with the contact and appears in their timeline
+    const engagementResponse = await fetch(`${HUBSPOT_BASE_URL}/engagements/v1/engagements`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
         'Authorization': `Bearer ${HUBSPOT_API_KEY}`
       },
       body: JSON.stringify({
-        properties: {
-          hs_note_body: noteContent,
-          hs_timestamp: new Date().toISOString()
+        engagement: {
+          active: true,
+          type: 'NOTE',
+          timestamp: new Date().getTime()
+        },
+        associations: {
+          contactIds: [parseInt(contactId)],
+          companyIds: [],
+          dealIds: [],
+          ownerIds: [],
+          ticketIds: []
+        },
+        metadata: {
+          body: engagementContent
         }
       })
     });
 
-    if (!noteResponse.ok) {
-      const errorText = await noteResponse.text();
-      console.error('Note creation error:', noteResponse.status, errorText);
-      throw new Error(`Note creation failed: ${noteResponse.status} - ${errorText}`);
+    if (!engagementResponse.ok) {
+      const errorText = await engagementResponse.text();
+      console.error('Engagement creation error:', engagementResponse.status, errorText);
+      throw new Error(`Engagement creation failed: ${engagementResponse.status} - ${errorText}`);
     }
 
-    const noteData = await noteResponse.json();
-    console.log('Note created successfully:', noteData.id);
-
-    // Note: Association with contact is not working yet
-    // The note exists in HubSpot but needs manual association
-    // TODO: Fix the association API call
-    console.log('Note created but association to contact needs to be done manually in HubSpot');
-
-    return noteData;
+    const engagementData = await engagementResponse.json();
+    console.log('Engagement created successfully:', engagementData.engagement.id);
+    return engagementData;
 
   } catch (error) {
-    console.error('Create contact note error:', error);
+    console.error('Create contact engagement error:', error);
     throw error;
   }
 }
@@ -212,21 +218,21 @@ app.post('/api/hubspot/update-contact', async (req, res) => {
       return res.status(500).json({ error: 'HubSpot API key not configured' });
     }
 
-    const noteContent = notes || 'Live December 11, 2025';
+    const engagementContent = notes || 'Live December 11, 2025 - Web';
 
-    // Find the contact and create a note
+    // Find the contact and create an engagement
     const contactResult = await ensureContactExists(email);
-    const noteResult = await createContactNote(contactResult.contactId, noteContent);
+    const engagementResult = await createContactEngagement(contactResult.contactId, engagementContent);
 
-    console.log('Contact updated with note:', {
+    console.log('Contact updated with engagement:', {
       contactId: contactResult.contactId,
-      noteId: noteResult.id
+      engagementId: engagementResult.engagement.id
     });
 
     res.json({
       contactId: contactResult.contactId,
-      noteId: noteResult.id,
-      action: 'note_added'
+      engagementId: engagementResult.engagement.id,
+      action: 'engagement_added'
     });
 
   } catch (error) {
