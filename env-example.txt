@@ -1,0 +1,5 @@
+# HubSpot API Configuration
+HUBSPOT_API_KEY=your_hubspot_api_key_here
+
+# Server Configuration (Render sets PORT automatically)
+PORT=10000

@@ -1,17 +1,20 @@
-// Secure Backend API Example for HubSpot Integration
-// This server acts as a proxy to keep API keys secure
-// Install dependencies: npm install express cors dotenv
+// Secure Backend API for HubSpot Integration
+// Deployed on Render - serves frontend and proxies HubSpot API calls
 
 require('dotenv').config();
 const express = require('express');
 const cors = require('cors');
+const path = require('path');
 
 const app = express();
-const PORT = process.env.PORT || 3001;
+const PORT = process.env.PORT || 10000;
 
 // Middleware
 app.use(cors());
 app.use(express.json());
+
+// Serve static files (frontend)
+app.use(express.static(path.join(__dirname)));
 
 // HubSpot API Configuration (from environment variables)
 const HUBSPOT_API_KEY = process.env.HUBSPOT_API_KEY;
@@ -133,6 +136,11 @@ app.post('/api/hubspot/update-contact', async (req, res) => {
     console.error('Update contact error:', error);
     res.status(500).json({ error: 'Failed to update contact' });
   }
+});
+
+// Serve the main HTML file
+app.get('/', (req, res) => {
+  res.sendFile(path.join(__dirname, 'index.html'));
 });
 
 // Health check

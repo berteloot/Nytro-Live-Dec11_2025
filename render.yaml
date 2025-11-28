@@ -1,0 +1,11 @@
+services:
+  - type: web
+    name: hubspot-email-overlay
+    runtime: node
+    buildCommand: npm install
+    startCommand: npm start
+    envVars:
+      - key: HUBSPOT_API_KEY
+        sync: false # Set this manually in Render dashboard
+      - key: NODE_ENV
+        value: production

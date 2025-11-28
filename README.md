@@ -112,3 +112,68 @@ The backend should return:
 5. Deploy both frontend and backend
 
 **Your API keys are now safe! 🔐**
+
+---
+
+## 🚀 Deploy to Render
+
+### **Step 1: Prepare Your Code**
+1. Ensure you have `server.js` (renamed from `server-example.js`)
+2. Your `package.json` should have the correct scripts
+3. Create a `.env` file with your HubSpot API key (see `env-example.txt`)
+
+### **Step 2: Push to GitHub**
+```bash
+git add .
+git commit -m "Ready for Render deployment"
+git push origin main
+```
+
+### **Step 3: Deploy on Render**
+
+1. **Go to [render.com](https://render.com) and sign up/login**
+2. **Click "New +" → "Web Service"**
+3. **Connect your GitHub repository**
+4. **Configure the service:**
+   - **Name**: `hubspot-email-overlay` (or your choice)
+   - **Runtime**: `Node`
+   - **Build Command**: `npm install`
+   - **Start Command**: `npm start`
+   - **Plan**: Free tier is fine for testing
+
+### **Step 4: Add Environment Variables**
+In Render dashboard, go to your service → Environment:
+```
+HUBSPOT_API_KEY = your_actual_hubspot_api_key
+```
+
+### **Step 5: Deploy**
+- Click "Create Web Service"
+- Wait for deployment (usually 2-5 minutes)
+- Your site will be live at: `https://your-service-name.onrender.com`
+
+### **Step 6: Update Frontend Config**
+Update `config.js` with your Render URL:
+```javascript
+BACKEND_API_URL: 'https://your-service-name.onrender.com/api/hubspot'
+```
+
+## 🔧 **Post-Deployment Checklist**
+
+- [ ] Test email overlay functionality
+- [ ] Verify HubSpot contact creation
+- [ ] Check that `@nytromarketing.com` emails bypass HubSpot
+- [ ] Ensure no API keys are exposed in browser console
+
+## 🆘 **Troubleshooting Render**
+
+- **Build fails**: Check your `package.json` dependencies
+- **App crashes**: Check Render logs for error messages
+- **CORS issues**: Ensure your backend CORS settings are correct
+- **Environment variables**: Make sure HUBSPOT_API_KEY is set in Render dashboard
+
+## 💰 **Render Costs**
+- **Free tier**: 750 hours/month, sleeps after 15min inactivity
+- **Paid plans**: From $7/month for always-on services
+
+**Happy deploying! 🎉**
