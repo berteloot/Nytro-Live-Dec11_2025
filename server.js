@@ -13,17 +13,28 @@ const PORT = process.env.PORT || 10000;
 app.use(cors());
 app.use(express.json());
 
+// Set proper MIME types for static files
+app.use('/config.js', (req, res, next) => {
+  res.setHeader('Content-Type', 'application/javascript');
+  next();
+});
+
 // Serve static files (frontend)
-app.use(express.static(path.join(__dirname)));
+app.use(express.static(path.join(__dirname), {
+  setHeaders: (res, path) => {
+    if (path.endsWith('.js')) {
+      res.setHeader('Content-Type', 'application/javascript');
+    }
+  }
+}));
 
 // HubSpot API Configuration (from environment variables)
 const HUBSPOT_API_KEY = process.env.HUBSPOT_API_KEY;
 const HUBSPOT_BASE_URL = 'https://api.hubapi.com';
 
-// Validate API key exists
+// Validate API key exists (warn but don't exit for testing)
 if (!HUBSPOT_API_KEY) {
-  console.error('HUBSPOT_API_KEY environment variable is required');
-  process.exit(1);
+  console.warn('WARNING: HUBSPOT_API_KEY environment variable is not set. HubSpot integration will not work.');
 }
 
 // API Endpoints
@@ -35,6 +46,10 @@ app.post('/api/hubspot/search-contact', async (req, res) => {
 
     if (!email) {
       return res.status(400).json({ error: 'Email is required' });
+    }
+
+    if (!HUBSPOT_API_KEY) {
+      return res.status(500).json({ error: 'HubSpot API key not configured' });
     }
 
     const response = await fetch(`${HUBSPOT_BASE_URL}/crm/v3/objects/contacts/search`, {
@@ -78,6 +93,10 @@ app.post('/api/hubspot/create-contact', async (req, res) => {
       return res.status(400).json({ error: 'Email is required' });
     }
 
+    if (!HUBSPOT_API_KEY) {
+      return res.status(500).json({ error: 'HubSpot API key not configured' });
+    }
+
     const response = await fetch(`${HUBSPOT_BASE_URL}/crm/v3/objects/contacts`, {
       method: 'POST',
       headers: {
@@ -111,6 +130,10 @@ app.post('/api/hubspot/update-contact', async (req, res) => {
 
     if (!contactId) {
       return res.status(400).json({ error: 'Contact ID is required' });
+    }
+
+    if (!HUBSPOT_API_KEY) {
+      return res.status(500).json({ error: 'HubSpot API key not configured' });
     }
 
     const response = await fetch(`${HUBSPOT_BASE_URL}/crm/v3/objects/contacts/${contactId}`, {
