@@ -13,9 +13,9 @@ const config = {
   HUBSPOT_COMPANY_PROPERTY: 'company',
   HUBSPOT_NOTES_PROPERTY: 'notes',
 
-  // Your backend API endpoint (AFTER DEPLOYING TO RENDER)
-  // This should proxy requests to HubSpot to keep API keys secure
-  BACKEND_API_URL: 'https://your-render-service-name.onrender.com/api/hubspot', // Replace with your Render URL
+  // Your backend API endpoint
+  // Since frontend and backend are on the same domain, use relative URL
+  BACKEND_API_URL: '/api/hubspot', // Works with same-domain deployment
   BACKEND_API_ENDPOINTS: {
     CREATE_CONTACT: '/create-contact',
     SEARCH_CONTACT: '/search-contact',
