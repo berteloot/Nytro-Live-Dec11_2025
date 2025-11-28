@@ -54,13 +54,27 @@ app.post('/api/hubspot/create-contact', async (req, res) => {
   try {
     const { email, notes } = req.body;
 
+    console.log('Create contact request:', { email, notes });
+
     if (!email) {
       return res.status(400).json({ error: 'Email is required' });
     }
 
     if (!HUBSPOT_API_KEY) {
+      console.error('HubSpot API key not configured');
       return res.status(500).json({ error: 'HubSpot API key not configured' });
     }
+
+    console.log('Making HubSpot API call with key:', HUBSPOT_API_KEY ? 'configured' : 'missing');
+
+    const requestBody = {
+      properties: {
+        email: email,
+        notes: notes || ''
+      }
+    };
+
+    console.log('Request body:', JSON.stringify(requestBody, null, 2));
 
     const response = await fetch(`${HUBSPOT_BASE_URL}/crm/v3/objects/contacts`, {
       method: 'POST',
@@ -68,23 +82,23 @@ app.post('/api/hubspot/create-contact', async (req, res) => {
         'Content-Type': 'application/json',
         'Authorization': `Bearer ${HUBSPOT_API_KEY}`
       },
-      body: JSON.stringify({
-        properties: {
-          email: email,
-          notes: notes || ''
-        }
-      })
+      body: JSON.stringify(requestBody)
     });
 
+    console.log('HubSpot API response status:', response.status);
+
     if (!response.ok) {
-      throw new Error(`HubSpot API error: ${response.status}`);
+      const errorText = await response.text();
+      console.error('HubSpot API error response:', response.status, errorText);
+      throw new Error(`HubSpot API error: ${response.status} - ${errorText}`);
     }
 
     const data = await response.json();
+    console.log('Contact created successfully:', data);
     res.json(data);
   } catch (error) {
     console.error('Create contact error:', error);
-    res.status(500).json({ error: 'Failed to create contact' });
+    res.status(500).json({ error: 'Failed to create contact', details: error.message });
   }
 });
 
@@ -181,7 +195,6 @@ app.get('/api/config', (req, res) => {
     BACKEND_API_URL: '/api/hubspot',
     BACKEND_API_ENDPOINTS: {
       CREATE_CONTACT: '/create-contact',
-      SEARCH_CONTACT: '/search-contact',
       UPDATE_CONTACT: '/update-contact'
     }
   });
