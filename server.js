@@ -67,17 +67,13 @@ app.post('/api/hubspot/create-contact', async (req, res) => {
 
     console.log('Making HubSpot API call with key:', HUBSPOT_API_KEY ? 'configured' : 'missing');
 
-    const requestBody = {
-      properties: {
-        email: email,
-        // TODO: Change this to your actual HubSpot property name
-        // Options: 'notes', 'last_live_event', 'ai_live_dec11_registered', etc.
-        ai_live_dec11_registered: true,
-        last_live_event: notes || ''
-      }
+    // Use the built-in notes property (always exists in HubSpot)
+    const properties = {
+      email: email,
+      notes: notes || 'Live December 11, 2025'
     };
 
-    console.log('Request body:', JSON.stringify(requestBody, null, 2));
+    console.log('Request body:', JSON.stringify({ properties }, null, 2));
 
     const response = await fetch(`${HUBSPOT_BASE_URL}/crm/v3/objects/contacts`, {
       method: 'POST',
@@ -85,7 +81,7 @@ app.post('/api/hubspot/create-contact', async (req, res) => {
         'Content-Type': 'application/json',
         'Authorization': `Bearer ${HUBSPOT_API_KEY}`
       },
-      body: JSON.stringify(requestBody)
+      body: JSON.stringify({ properties })
     });
 
     console.log('HubSpot API response status:', response.status);
@@ -109,10 +105,10 @@ app.post('/api/hubspot/create-contact', async (req, res) => {
 
       if (existingId) {
         // Update the existing contact
-        return updateExistingContact(existingId, requestBody, res);
+        return updateExistingContact(existingId, properties, res);
       } else {
         // Fallback: search by email and update
-        return updateContactByEmail(email, requestBody, res);
+        return updateContactByEmail(email, properties, res);
       }
     }
 
@@ -130,7 +126,7 @@ app.post('/api/hubspot/create-contact', async (req, res) => {
 // Helper function to update existing contact by ID
 async function updateExistingContact(contactId, properties, res) {
   try {
-    console.log('Updating existing contact:', contactId);
+    console.log('Updating existing contact:', contactId, 'with properties:', properties);
 
     const response = await fetch(`${HUBSPOT_BASE_URL}/crm/v3/objects/contacts/${contactId}`, {
       method: 'PATCH',
@@ -160,7 +156,7 @@ async function updateExistingContact(contactId, properties, res) {
 // Helper function to update contact by email
 async function updateContactByEmail(email, properties, res) {
   try {
-    console.log('Updating contact by email:', email);
+    console.log('Updating contact by email:', email, 'with properties:', properties);
 
     // First find the contact
     const searchResponse = await fetch(`${HUBSPOT_BASE_URL}/crm/v3/objects/contacts/search`, {
@@ -182,7 +178,9 @@ async function updateContactByEmail(email, properties, res) {
     });
 
     if (!searchResponse.ok) {
-      throw new Error(`Search failed: ${searchResponse.status}`);
+      const errorText = await searchResponse.text();
+      console.error('Search failed:', searchResponse.status, errorText);
+      throw new Error(`Search failed: ${searchResponse.status} - ${errorText}`);
     }
 
     const searchData = await searchResponse.json();
@@ -215,9 +213,8 @@ app.post('/api/hubspot/update-contact', async (req, res) => {
     }
 
     const properties = {
-      // TODO: Change this to your actual HubSpot property name
-      ai_live_dec11_registered: true,
-      last_live_event: notes || ''
+      email: email,
+      notes: notes || 'Live December 11, 2025'
     };
 
     return updateContactByEmail(email, properties, res);
