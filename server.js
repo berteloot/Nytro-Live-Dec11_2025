@@ -54,6 +54,8 @@ app.post('/api/hubspot/search-contact', async (req, res) => {
   try {
     const { email } = req.body;
 
+    console.log('Search contact request:', { email });
+
     if (!email) {
       return res.status(400).json({ error: 'Email is required' });
     }
@@ -76,21 +78,25 @@ app.post('/api/hubspot/search-contact', async (req, res) => {
             value: email
           }]
         }],
-        properties: ['email']
+        properties: ['email', 'notes']
       })
     });
 
     if (!response.ok) {
-      throw new Error(`HubSpot API error: ${response.status}`);
+      const errorText = await response.text();
+      console.error('HubSpot search error:', response.status, errorText);
+      throw new Error(`HubSpot API error: ${response.status} - ${errorText}`);
     }
 
     const data = await response.json();
     const contact = data.results && data.results.length > 0 ? data.results[0] : null;
 
+    console.log('Search result:', { found: !!contact, contactId: contact?.id });
+
     res.json({ contact });
   } catch (error) {
     console.error('Search contact error:', error);
-    res.status(500).json({ error: 'Failed to search contact' });
+    res.status(500).json({ error: 'Failed to search contact', details: error.message });
   }
 });
 
@@ -138,6 +144,8 @@ app.post('/api/hubspot/update-contact', async (req, res) => {
   try {
     const { contactId, notes } = req.body;
 
+    console.log('Update contact request:', { contactId, notes });
+
     if (!contactId) {
       return res.status(400).json({ error: 'Contact ID is required' });
     }
@@ -146,7 +154,20 @@ app.post('/api/hubspot/update-contact', async (req, res) => {
       return res.status(500).json({ error: 'HubSpot API key not configured' });
     }
 
-    const response = await fetch(`${HUBSPOT_BASE_URL}/crm/v3/objects/contacts/${contactId}`, {
+    // Validate contact exists first
+    const checkResponse = await fetch(`${HUBSPOT_BASE_URL}/crm/v3/objects/contacts/${contactId}`, {
+      method: 'GET',
+      headers: {
+        'Authorization': `Bearer ${HUBSPOT_API_KEY}`
+      }
+    });
+
+    if (!checkResponse.ok) {
+      console.error('Contact validation failed:', checkResponse.status, await checkResponse.text());
+      return res.status(404).json({ error: 'Contact not found or invalid contact ID' });
+    }
+
+    const updateResponse = await fetch(`${HUBSPOT_BASE_URL}/crm/v3/objects/contacts/${contactId}`, {
       method: 'PATCH',
       headers: {
         'Content-Type': 'application/json',
@@ -159,15 +180,18 @@ app.post('/api/hubspot/update-contact', async (req, res) => {
       })
     });
 
-    if (!response.ok) {
-      throw new Error(`HubSpot API error: ${response.status}`);
+    if (!updateResponse.ok) {
+      const errorText = await updateResponse.text();
+      console.error('HubSpot update error:', updateResponse.status, errorText);
+      throw new Error(`HubSpot API error: ${updateResponse.status} - ${errorText}`);
     }
 
-    const data = await response.json();
+    const data = await updateResponse.json();
+    console.log('Contact updated successfully:', contactId);
     res.json(data);
   } catch (error) {
     console.error('Update contact error:', error);
-    res.status(500).json({ error: 'Failed to update contact' });
+    res.status(500).json({ error: 'Failed to update contact', details: error.message });
   }
 });
 
