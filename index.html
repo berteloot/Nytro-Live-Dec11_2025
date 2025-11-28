@@ -1110,14 +1110,7 @@ Structure the report in four parts:
 
       async createHubSpotContact(email) {
         try {
-          // First check if contact already exists
-          const existingContact = await this.searchHubSpotContact(email);
-          if (existingContact) {
-            console.log('Contact already exists, updating...');
-            return await this.updateHubSpotContact(existingContact.id);
-          }
-
-          // Create new contact via backend proxy
+          // Try to create new contact with note
           const response = await fetch(`${window.CONFIG?.BACKEND_API_URL}${window.CONFIG?.BACKEND_API_ENDPOINTS.CREATE_CONTACT}`, {
             method: 'POST',
             headers: {
@@ -1125,50 +1118,33 @@ Structure the report in four parts:
             },
             body: JSON.stringify({
               email: email,
-              notes: 'Live Dec 11 2025'
+              notes: 'Live December 11, 2025'
             })
           });
 
-          if (!response.ok) {
-            const errorData = await response.text();
-            console.error('Backend API error:', response.status, errorData);
-            throw new Error(`HTTP error! status: ${response.status}`);
+          if (response.ok) {
+            const data = await response.json();
+            console.log('HubSpot contact created:', data);
+            return true;
           }
 
-          const data = await response.json();
-          console.log('HubSpot contact created:', data);
-          return true;
+          // If creation failed (likely contact exists), try to update
+          if (response.status === 409 || response.status >= 400) {
+            console.log('Contact might already exist, attempting update...');
+            return await this.updateHubSpotContactByEmail(email);
+          }
+
+          const errorData = await response.text();
+          console.error('Backend API error:', response.status, errorData);
+          throw new Error(`HTTP error! status: ${response.status}`);
         } catch (error) {
-          console.error('Error creating HubSpot contact:', error);
+          console.error('Error creating/updating HubSpot contact:', error);
           return false;
         }
       }
 
-      async searchHubSpotContact(email) {
-        try {
-          const response = await fetch(`${window.CONFIG?.BACKEND_API_URL}${window.CONFIG?.BACKEND_API_ENDPOINTS.SEARCH_CONTACT}`, {
-            method: 'POST',
-            headers: {
-              'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({
-              email: email
-            })
-          });
 
-          if (!response.ok) {
-            return null;
-          }
-
-          const data = await response.json();
-          return data.contact || null;
-        } catch (error) {
-          console.error('Error searching HubSpot contact:', error);
-          return null;
-        }
-      }
-
-      async updateHubSpotContact(contactId, email = null) {
+      async updateHubSpotContactByEmail(email) {
         try {
           const response = await fetch(`${window.CONFIG?.BACKEND_API_URL}${window.CONFIG?.BACKEND_API_ENDPOINTS.UPDATE_CONTACT}`, {
             method: 'POST',
@@ -1176,9 +1152,8 @@ Structure the report in four parts:
               'Content-Type': 'application/json',
             },
             body: JSON.stringify({
-              contactId: contactId,
               email: email,
-              notes: 'Live Dec 11 2025'
+              notes: 'Live December 11, 2025'
             })
           });
 
@@ -1187,7 +1162,7 @@ Structure the report in four parts:
           }
 
           const data = await response.json();
-          console.log('HubSpot contact updated:', contactId);
+          console.log('HubSpot contact updated for email:', email);
           return true;
         } catch (error) {
           console.error('Error updating HubSpot contact:', error);

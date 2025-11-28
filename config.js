@@ -18,7 +18,6 @@ const config = {
   BACKEND_API_URL: '/api/hubspot', // Works with same-domain deployment
   BACKEND_API_ENDPOINTS: {
     CREATE_CONTACT: '/create-contact',
-    SEARCH_CONTACT: '/search-contact',
     UPDATE_CONTACT: '/update-contact'
   }
 };
