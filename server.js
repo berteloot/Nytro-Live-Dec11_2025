@@ -183,25 +183,26 @@ async function createContactNote(contactId, noteContent) {
     const noteData = await noteResponse.json();
     console.log('Note created successfully:', noteData.id);
 
-    // Now create the association using the correct endpoint
-    // PUT /crm/v4/objects/notes/{noteId}/associations/contacts/{contactId}
-    // Try without specifying association types first to use defaults
-    const associationResponse = await fetch(`${HUBSPOT_BASE_URL}/crm/v4/objects/notes/${noteData.id}/associations/contacts/${contactId}`, {
-      method: 'PUT',
-      headers: {
-        'Content-Type': 'application/json',
-        'Authorization': `Bearer ${HUBSPOT_API_KEY}`
-      },
-      body: JSON.stringify([]) // Empty array for default association
-    });
+    // Try to associate the note with the contact
+    // Use the simpler associations API
+    try {
+      const associationResponse = await fetch(`${HUBSPOT_BASE_URL}/crm/v4/objects/notes/${noteData.id}/associations/contacts/${contactId}`, {
+        method: 'PUT',
+        headers: {
+          'Authorization': `Bearer ${HUBSPOT_API_KEY}`
+        }
+      });
 
-    if (!associationResponse.ok) {
-      const errorText = await associationResponse.text();
-      console.error('Note association error:', associationResponse.status, errorText);
-      // Don't throw here - note was created successfully, just association failed
-      console.warn('Note created but association failed - note exists but not linked to contact');
-    } else {
-      console.log('Note associated with contact successfully');
+      if (associationResponse.ok) {
+        console.log('Note associated with contact successfully');
+      } else {
+        const errorText = await associationResponse.text();
+        console.error('Note association failed:', associationResponse.status, errorText);
+        console.warn('Note created but not associated with contact - you may need to link it manually in HubSpot');
+      }
+    } catch (assocError) {
+      console.error('Association attempt failed:', assocError);
+      console.warn('Note created but association failed - check HubSpot for unassociated notes');
     }
 
     return noteData;
