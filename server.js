@@ -28,6 +28,16 @@ app.use(express.static(path.join(__dirname), {
   }
 }));
 
+// Serve index.html for root requests
+app.get('/', (req, res) => {
+  res.sendFile(path.join(__dirname, 'index.html'));
+});
+
+// Handle favicon requests to prevent 404 errors
+app.get('/favicon.ico', (req, res) => {
+  res.status(204).end(); // No content response
+});
+
 // HubSpot API Configuration (from environment variables)
 const HUBSPOT_API_KEY = process.env.HUBSPOT_API_KEY;
 const HUBSPOT_BASE_URL = 'https://api.hubapi.com';
@@ -168,7 +178,12 @@ app.get('/', (req, res) => {
 
 // Health check
 app.get('/api/health', (req, res) => {
-  res.json({ status: 'OK', timestamp: new Date().toISOString() });
+  res.json({
+    status: 'OK',
+    timestamp: new Date().toISOString(),
+    hubspotConfigured: !!HUBSPOT_API_KEY,
+    version: '1.0.0'
+  });
 });
 
 // Start server
