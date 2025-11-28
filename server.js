@@ -49,7 +49,7 @@ if (!HUBSPOT_API_KEY) {
 
 // API Endpoints
 
-// Create new contact
+// Create new contact or update existing
 app.post('/api/hubspot/create-contact', async (req, res) => {
   try {
     const { email, notes } = req.body;
@@ -70,7 +70,10 @@ app.post('/api/hubspot/create-contact', async (req, res) => {
     const requestBody = {
       properties: {
         email: email,
-        hs_notes: notes || ''
+        // TODO: Change this to your actual HubSpot property name
+        // Options: 'notes', 'last_live_event', 'ai_live_dec11_registered', etc.
+        ai_live_dec11_registered: true,
+        last_live_event: notes || ''
       }
     };
 
@@ -87,37 +90,79 @@ app.post('/api/hubspot/create-contact', async (req, res) => {
 
     console.log('HubSpot API response status:', response.status);
 
-    if (!response.ok) {
-      const errorText = await response.text();
-      console.error('HubSpot API error response:', response.status, errorText);
-      throw new Error(`HubSpot API error: ${response.status} - ${errorText}`);
+    if (response.ok) {
+      // Contact created successfully
+      const data = await response.json();
+      console.log('Contact created successfully:', data);
+      return res.json({ ...data, action: 'created' });
     }
 
-    const data = await response.json();
-    console.log('Contact created successfully:', data);
-    res.json(data);
+    if (response.status === 409) {
+      // Contact already exists - update it instead
+      console.log('Contact already exists, updating instead...');
+      const errorText = await response.text();
+      console.log('409 response:', errorText);
+
+      // Extract existing contact ID if available
+      const idMatch = errorText.match(/ID:\s*(\d+)/);
+      const existingId = idMatch ? idMatch[1] : null;
+
+      if (existingId) {
+        // Update the existing contact
+        return updateExistingContact(existingId, requestBody, res);
+      } else {
+        // Fallback: search by email and update
+        return updateContactByEmail(email, requestBody, res);
+      }
+    }
+
+    // Handle other errors
+    const errorText = await response.text();
+    console.error('HubSpot API error response:', response.status, errorText);
+    throw new Error(`HubSpot API error: ${response.status} - ${errorText}`);
+
   } catch (error) {
     console.error('Create contact error:', error);
     res.status(500).json({ error: 'Failed to create contact', details: error.message });
   }
 });
 
-// Update existing contact by email
-app.post('/api/hubspot/update-contact', async (req, res) => {
+// Helper function to update existing contact by ID
+async function updateExistingContact(contactId, properties, res) {
   try {
-    const { email, notes } = req.body;
+    console.log('Updating existing contact:', contactId);
 
-    console.log('Update contact by email request:', { email, notes });
+    const response = await fetch(`${HUBSPOT_BASE_URL}/crm/v3/objects/contacts/${contactId}`, {
+      method: 'PATCH',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${HUBSPOT_API_KEY}`
+      },
+      body: JSON.stringify({ properties })
+    });
 
-    if (!email) {
-      return res.status(400).json({ error: 'Email is required' });
+    if (!response.ok) {
+      const errorText = await response.text();
+      console.error('Update error:', response.status, errorText);
+      throw new Error(`Update failed: ${response.status} - ${errorText}`);
     }
 
-    if (!HUBSPOT_API_KEY) {
-      return res.status(500).json({ error: 'HubSpot API key not configured' });
-    }
+    const data = await response.json();
+    console.log('Contact updated successfully:', contactId);
+    res.json({ ...data, action: 'updated' });
 
-    // First find the contact by email
+  } catch (error) {
+    console.error('Update existing contact error:', error);
+    res.status(500).json({ error: 'Failed to update contact', details: error.message });
+  }
+}
+
+// Helper function to update contact by email
+async function updateContactByEmail(email, properties, res) {
+  try {
+    console.log('Updating contact by email:', email);
+
+    // First find the contact
     const searchResponse = await fetch(`${HUBSPOT_BASE_URL}/crm/v3/objects/contacts/search`, {
       method: 'POST',
       headers: {
@@ -137,41 +182,46 @@ app.post('/api/hubspot/update-contact', async (req, res) => {
     });
 
     if (!searchResponse.ok) {
-      const errorText = await searchResponse.text();
-      console.error('Contact search failed:', searchResponse.status, errorText);
-      return res.status(404).json({ error: 'Contact not found' });
+      throw new Error(`Search failed: ${searchResponse.status}`);
     }
 
     const searchData = await searchResponse.json();
     if (!searchData.results || searchData.results.length === 0) {
-      return res.status(404).json({ error: 'Contact not found' });
+      throw new Error('Contact not found for update');
     }
 
     const contactId = searchData.results[0].id;
+    return updateExistingContact(contactId, properties, res);
 
-    // Update the contact
-    const updateResponse = await fetch(`${HUBSPOT_BASE_URL}/crm/v3/objects/contacts/${contactId}`, {
-      method: 'PATCH',
-      headers: {
-        'Content-Type': 'application/json',
-        'Authorization': `Bearer ${HUBSPOT_API_KEY}`
-      },
-      body: JSON.stringify({
-        properties: {
-          hs_notes: notes || ''
-        }
-      })
-    });
+  } catch (error) {
+    console.error('Update by email error:', error);
+    res.status(500).json({ error: 'Failed to update contact', details: error.message });
+  }
+}
 
-    if (!updateResponse.ok) {
-      const errorText = await updateResponse.text();
-      console.error('HubSpot update error:', updateResponse.status, errorText);
-      throw new Error(`HubSpot API error: ${updateResponse.status} - ${errorText}`);
+// Update existing contact by email (fallback endpoint)
+app.post('/api/hubspot/update-contact', async (req, res) => {
+  try {
+    const { email, notes } = req.body;
+
+    console.log('Update contact by email request:', { email, notes });
+
+    if (!email) {
+      return res.status(400).json({ error: 'Email is required' });
     }
 
-    const data = await updateResponse.json();
-    console.log('Contact updated successfully for email:', email);
-    res.json(data);
+    if (!HUBSPOT_API_KEY) {
+      return res.status(500).json({ error: 'HubSpot API key not configured' });
+    }
+
+    const properties = {
+      // TODO: Change this to your actual HubSpot property name
+      ai_live_dec11_registered: true,
+      last_live_event: notes || ''
+    };
+
+    return updateContactByEmail(email, properties, res);
+
   } catch (error) {
     console.error('Update contact error:', error);
     res.status(500).json({ error: 'Failed to update contact', details: error.message });
