@@ -13,13 +13,13 @@ const PORT = process.env.PORT || 10000;
 app.use(cors());
 app.use(express.json());
 
-// Set proper MIME types for static files
+// Set proper MIME types for specific files BEFORE static serving
 app.use('/config.js', (req, res, next) => {
   res.setHeader('Content-Type', 'application/javascript');
   next();
 });
 
-// Serve static files (frontend)
+// Serve static files (frontend) - AFTER specific routes
 app.use(express.static(path.join(__dirname), {
   setHeaders: (res, path) => {
     if (path.endsWith('.js')) {
@@ -182,7 +182,22 @@ app.get('/api/health', (req, res) => {
     status: 'OK',
     timestamp: new Date().toISOString(),
     hubspotConfigured: !!HUBSPOT_API_KEY,
-    version: '1.0.0'
+    version: '1.0.0',
+    config: {
+      backendUrl: '/api/hubspot',
+      hubspotBaseUrl: HUBSPOT_BASE_URL
+    }
+  });
+});
+
+// Debug endpoint
+app.get('/api/debug', (req, res) => {
+  res.json({
+    server: 'running',
+    port: PORT,
+    timestamp: new Date().toISOString(),
+    hubspotConfigured: !!HUBSPOT_API_KEY,
+    staticPath: path.join(__dirname)
   });
 });
 
