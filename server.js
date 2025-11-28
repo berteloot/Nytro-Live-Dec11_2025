@@ -176,6 +176,24 @@ app.get('/', (req, res) => {
   res.sendFile(path.join(__dirname, 'index.html'));
 });
 
+// Serve client configuration
+app.get('/api/config', (req, res) => {
+  res.json({
+    ALLOWED_DOMAIN: 'nytromarketing.com',
+    HUBSPOT_EMAIL_PROPERTY: 'email',
+    HUBSPOT_FIRSTNAME_PROPERTY: 'firstname',
+    HUBSPOT_LASTNAME_PROPERTY: 'lastname',
+    HUBSPOT_COMPANY_PROPERTY: 'company',
+    HUBSPOT_NOTES_PROPERTY: 'notes',
+    BACKEND_API_URL: '/api/hubspot',
+    BACKEND_API_ENDPOINTS: {
+      CREATE_CONTACT: '/create-contact',
+      SEARCH_CONTACT: '/search-contact',
+      UPDATE_CONTACT: '/update-contact'
+    }
+  });
+});
+
 // Health check
 app.get('/api/health', (req, res) => {
   res.json({

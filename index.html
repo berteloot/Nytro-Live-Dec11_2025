@@ -992,7 +992,7 @@ Structure the report in four parts:
   </div>
 
   <!-- Scripts -->
-  <script src="config.js"></script>
+  <!-- Configuration will be loaded via API -->
   <script>
     class EmailOverlay {
       constructor() {
@@ -1196,10 +1196,37 @@ Structure the report in four parts:
       }
     }
 
-    // Initialize the overlay when the page loads
-    document.addEventListener('DOMContentLoaded', () => {
-      new EmailOverlay();
-    });
+// Load configuration and initialize
+async function loadConfig() {
+  try {
+    const response = await fetch('/api/config');
+    if (!response.ok) {
+      throw new Error('Failed to load configuration');
+    }
+    const config = await response.json();
+    window.CONFIG = config;
+    return true;
+  } catch (error) {
+    console.error('Failed to load config:', error);
+    // Fallback configuration
+    window.CONFIG = {
+      ALLOWED_DOMAIN: 'nytromarketing.com',
+      BACKEND_API_URL: '/api/hubspot',
+      BACKEND_API_ENDPOINTS: {
+        CREATE_CONTACT: '/create-contact',
+        SEARCH_CONTACT: '/search-contact',
+        UPDATE_CONTACT: '/update-contact'
+      }
+    };
+    return false;
+  }
+}
+
+// Initialize the overlay when the page loads
+document.addEventListener('DOMContentLoaded', async () => {
+  await loadConfig();
+  new EmailOverlay();
+});
   </script>
 </body>
 </html>
