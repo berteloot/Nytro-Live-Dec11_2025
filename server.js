@@ -159,6 +159,7 @@ async function createContactNote(contactId, noteContent) {
   try {
     console.log('Creating note for contact:', contactId, 'with content:', noteContent);
 
+    // Create the note first
     const noteResponse = await fetch(`${HUBSPOT_BASE_URL}/crm/v3/objects/notes`, {
       method: 'POST',
       headers: {
@@ -169,14 +170,7 @@ async function createContactNote(contactId, noteContent) {
         properties: {
           hs_note_body: noteContent,
           hs_timestamp: new Date().toISOString()
-        },
-        associations: [{
-          to: { id: contactId },
-          types: [{
-            associationCategory: 'HUBSPOT_DEFINED',
-            associationTypeId: 201 // Contact to Note association
-          }]
-        }]
+        }
       })
     });
 
@@ -188,6 +182,28 @@ async function createContactNote(contactId, noteContent) {
 
     const noteData = await noteResponse.json();
     console.log('Note created successfully:', noteData.id);
+
+    // Now create the association using the correct endpoint
+    // PUT /crm/v4/objects/notes/{noteId}/associations/contacts/{contactId}
+    // Try without specifying association types first to use defaults
+    const associationResponse = await fetch(`${HUBSPOT_BASE_URL}/crm/v4/objects/notes/${noteData.id}/associations/contacts/${contactId}`, {
+      method: 'PUT',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${HUBSPOT_API_KEY}`
+      },
+      body: JSON.stringify([]) // Empty array for default association
+    });
+
+    if (!associationResponse.ok) {
+      const errorText = await associationResponse.text();
+      console.error('Note association error:', associationResponse.status, errorText);
+      // Don't throw here - note was created successfully, just association failed
+      console.warn('Note created but association failed - note exists but not linked to contact');
+    } else {
+      console.log('Note associated with contact successfully');
+    }
+
     return noteData;
 
   } catch (error) {
