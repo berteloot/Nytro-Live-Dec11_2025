@@ -70,7 +70,7 @@ app.post('/api/hubspot/create-contact', async (req, res) => {
     const requestBody = {
       properties: {
         email: email,
-        notes: notes || ''
+        hs_notes: notes || ''
       }
     };
 
@@ -158,7 +158,7 @@ app.post('/api/hubspot/update-contact', async (req, res) => {
       },
       body: JSON.stringify({
         properties: {
-          notes: notes || ''
+          hs_notes: notes || ''
         }
       })
     });
