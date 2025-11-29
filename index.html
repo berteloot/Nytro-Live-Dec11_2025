@@ -218,6 +218,40 @@
       margin-top: 6px;
     }
 
+    .tool-category {
+      margin-top: 32px;
+      margin-bottom: 16px;
+    }
+
+    .tool-category h3 {
+      font-size: 1.1rem;
+      font-weight: 600;
+      color: var(--text);
+      margin: 0 0 8px 0;
+    }
+
+    .tool-category p {
+      font-size: 0.9rem;
+      color: var(--muted);
+      margin: 0;
+      line-height: 1.4;
+    }
+
+    .why-matters {
+      margin-top: 20px;
+      padding: 16px;
+      background: linear-gradient(145deg, rgba(5, 7, 14, 0.6), rgba(26, 37, 53, 0.4));
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      font-size: 0.9rem;
+      color: var(--text);
+      line-height: 1.5;
+    }
+
+    .why-matters strong {
+      color: var(--accent);
+    }
+
     /* Prompt blocks */
     .prompt-grid {
       display: grid;
@@ -600,7 +634,7 @@
       <ul>
         <li><a href="#overview">Overview</a></li>
         <li><a href="#market-definition">Market definition</a></li>
-        <li><a href="#ai-stack">AI stack</a></li>
+        <li><a href="#ai-stack">Strategic toolkit</a></li>
         <li><a href="#prompts">Prompt library</a></li>
         <li><a href="#nytro-vp">Nytro Value Proposition Engine</a></li>
         <li><a href="#extras">Prospecting and content tools</a></li>
@@ -640,23 +674,20 @@
       <!-- AI stack -->
       <section id="ai-stack">
         <p class="pill-label">Tooling</p>
-        <h2>My AI stack</h2>
+        <h2>My AI stack organized by strategic purpose</h2>
         <p class="lead">
-          My AI toolbox is deliberately small and practical. A few tools that I know very well are worth more than a bloated stack no one uses.
+          My AI toolbox follows a strategic framework: jobs first, tools second. Each tool serves a specific purpose in the marketing lifecycle, ensuring that technology supports clear business objectives rather than the other way around.
         </p>
-        <p class="lead">
-          OpenAI is my primary workbench. It is where I run agentic research, check code, and rely on custom GPTs specialized by task: market studies, value proposition mapping, content frameworks, email generation, and more.
-        </p>
-        <p class="lead">
-          I complement this with tools built for deep document-centric research. NotebookLM, for example, lets me load client assets, competitive decks, transcripts, and notes into a single workspace. It becomes a briefing room where I can interrogate sources, not just the open web. Combined with ChatGPT, this gives me a research system that is fast but still grounded in real material.
-        </p>
-        <p class="lead">
-          The rest of my stack is organized around the lifecycle of a campaign: defining markets, segments, and value propositions; identifying and enriching leads; activating those leads via events and outbound; repurposing recordings into a content engine. Each tool has a clear job. AI is not a black box; it is a set of capabilities that plug into specific steps of a marketing process I already control.
-        </p>
+
+        <!-- Research Tools -->
+        <div class="tool-category">
+          <h3>For research</h3>
+          <p>Understanding markets, competitors, and buyer behavior before taking action.</p>
+        </div>
 
         <div class="stack-grid">
           <div class="stack-item">
-            <div class="stack-item-role">Strategy and research</div>
+            <div class="stack-item-role">AI research & ideation</div>
             <div class="stack-item-title">
               ChatGPT (Projects, custom GPTs, deep research)
             </div>
@@ -669,19 +700,41 @@
           </div>
 
           <div class="stack-item">
-            <div class="stack-item-role">Competitive research</div>
+            <div class="stack-item-role">Document analysis & synthesis</div>
+            <div class="stack-item-title">NotebookLM</div>
+            <a href="https://notebooklm.google.com" target="_blank" rel="noreferrer">
+              notebooklm.google.com
+            </a>
+            <p class="stack-item-desc">
+              Transform documents into interactive knowledge bases. Upload client decks, competitive analysis, and research materials to create an AI-powered briefing room that can answer questions and synthesize insights across all sources.
+            </p>
+          </div>
+
+          <div class="stack-item">
+            <div class="stack-item-role">Competitive intelligence</div>
             <div class="stack-item-title">Perplexity</div>
             <a href="https://www.perplexity.ai" target="_blank" rel="noreferrer">
               perplexity.ai
             </a>
             <p class="stack-item-desc">
-              Deep research runs that map competitors, categories, and buying
-              triggers.
+              Deep research runs that map competitors, categories, and buying triggers with AI-powered search and synthesis.
             </p>
           </div>
+        </div>
 
+        <div class="why-matters">
+          <strong>Why this matters:</strong> Research without a strategic foundation leads to expensive distractions— these tools ensure every insight directly informs your market positioning.
+        </div>
+
+        <!-- Segmentation Tools -->
+        <div class="tool-category">
+          <h3>For segmentation</h3>
+          <p>Identifying high-value customer segments and crafting messages that resonate with their specific pain points.</p>
+        </div>
+
+        <div class="stack-grid">
           <div class="stack-item">
-            <div class="stack-item-role">Value proposition engine</div>
+            <div class="stack-item-role">Value proposition mapping</div>
             <div class="stack-item-title">
               Nytro Value Proposition Generator
             </div>
@@ -693,32 +746,32 @@
               value-proposition.nytromarketing.com
             </a>
             <p class="stack-item-desc">
-              Custom app built on the Value Mapping framework and jobs to be
-              done to generate segment specific value propositions and a
-              prospect universe.
+              Custom app built on the Value Mapping framework and jobs to be done to generate segment specific value propositions and a prospect universe.
             </p>
           </div>
 
           <div class="stack-item">
-            <div class="stack-item-role">Lead generation assessment</div>
-            <div class="stack-item-title">
-              Nytro Lead Gen Health Check
-            </div>
-            <a
-              href="https://lead-gen-assessment.nytromarketing.com"
-              target="_blank"
-              rel="noreferrer"
-            >
-              lead-gen-assessment.nytromarketing.com
-            </a>
+            <div class="stack-item-role">JTBD analysis prompts</div>
+            <div class="stack-item-title">Jobs-to-Be-Done Frameworks</div>
             <p class="stack-item-desc">
-              AI-powered assessment that scores your marketing across 7 key areas
-              and provides personalized recommendations to find pipeline gaps.
+              Structured prompts and frameworks for identifying customer jobs, pain points, and emotional drivers that motivate purchasing decisions. These go beyond demographics to uncover what customers are actually trying to accomplish.
             </p>
           </div>
+        </div>
 
+        <div class="why-matters">
+          <strong>Why this matters:</strong> Generic messaging fails because it doesn't address specific customer contexts—these tools ensure your positioning maps directly to what buyers are trying to achieve.
+        </div>
+
+        <!-- Prospecting Tools -->
+        <div class="tool-category">
+          <h3>For prospecting</h3>
+          <p>Finding and qualifying leads at scale while maintaining the personal touch that drives conversions.</p>
+        </div>
+
+        <div class="stack-grid">
           <div class="stack-item">
-            <div class="stack-item-role">Prospecting automation</div>
+            <div class="stack-item-role">Event prospecting & outreach</div>
             <div class="stack-item-title">PhantomBuster</div>
             <a
               href="https://phantombuster.com"
@@ -728,65 +781,46 @@
               phantombuster.com
             </a>
             <p class="stack-item-desc">
-              Scrape LinkedIn events, automate invitations, and push enriched
-              leads to CRM.
+              Scrape LinkedIn events, automate invitations, and push enriched leads to CRM for systematic follow-up.
             </p>
           </div>
 
           <div class="stack-item">
-            <div class="stack-item-role">Data enrichment</div>
+            <div class="stack-item-role">Data enrichment & verification</div>
             <div class="stack-item-title">Apollo.io</div>
             <a href="https://www.apollo.io" target="_blank" rel="noreferrer">
               apollo.io
             </a>
             <p class="stack-item-desc">
-              Enrich lists, validate emails, and segment accounts by firmographic
-              data.
+              Enrich lists, validate emails, and segment accounts by firmographic data to ensure prospect quality and intent.
             </p>
           </div>
+        </div>
 
-          <div class="stack-item">
-            <div class="stack-item-role">Social and events</div>
-            <div class="stack-item-title">LinkedIn and Sales Navigator</div>
-            <a
-              href="https://www.linkedin.com/sales"
-              target="_blank"
-              rel="noreferrer"
-            >
-              linkedin.com/sales
-            </a>
-            <p class="stack-item-desc">
-              Source ICP contacts, host LinkedIn events, and nurture buyers with
-              relevant content.
-            </p>
-          </div>
+        <div class="why-matters">
+          <strong>Why this matters:</strong> Poor prospecting fills your funnel with unqualified leads—these tools ensure every prospect represents a real buying opportunity with verified contact information.
+        </div>
 
+        <!-- Content Tools -->
+        <div class="tool-category">
+          <h3>For content</h3>
+          <p>Creating professional content assets that scale while maintaining quality and brand consistency.</p>
+        </div>
+
+        <div class="stack-grid">
           <div class="stack-item">
-            <div class="stack-item-role">Editing and clipping</div>
+            <div class="stack-item-role">Video editing & transcription</div>
             <div class="stack-item-title">Descript</div>
             <a href="https://www.descript.com" target="_blank" rel="noreferrer">
               descript.com
             </a>
             <p class="stack-item-desc">
-              Clean transcripts, remove filler, and cut video or audio as easily
-              as editing text.
+              Clean transcripts, remove filler, and cut video or audio as easily as editing text. Transform raw recordings into professional content assets.
             </p>
           </div>
 
           <div class="stack-item">
-            <div class="stack-item-role">Voice and dubbing</div>
-            <div class="stack-item-title">ElevenLabs</div>
-            <a href="https://elevenlabs.io" target="_blank" rel="noreferrer">
-              elevenlabs.io
-            </a>
-            <p class="stack-item-desc">
-              Clone voice, dub videos in multiple languages, and create narrated
-              assets.
-            </p>
-          </div>
-
-          <div class="stack-item">
-            <div class="stack-item-role">AI video outreach</div>
+            <div class="stack-item-role">AI video production</div>
             <div class="stack-item-title">Synthesia</div>
             <a
               href="https://www.synthesia.io"
@@ -796,25 +830,12 @@
               synthesia.io
             </a>
             <p class="stack-item-desc">
-              Record personalized AI videos at scale for outbound and onboarding
-              flows.
+              Record personalized AI videos at scale for outbound and onboarding flows, eliminating the bottleneck of video production.
             </p>
           </div>
 
           <div class="stack-item">
-            <div class="stack-item-role">Workflow automation</div>
-            <div class="stack-item-title">Make.com</div>
-            <a href="https://www.make.com" target="_blank" rel="noreferrer">
-              make.com
-            </a>
-            <p class="stack-item-desc">
-              Connect forms, events, CRM, and AI services into repeatable
-              no code workflows.
-            </p>
-          </div>
-
-          <div class="stack-item">
-            <div class="stack-item-role">Soundtracks and jingles</div>
+            <div class="stack-item-role">Audio & music generation</div>
             <div class="stack-item-title">Udio and Suno</div>
             <a href="https://www.udio.com" target="_blank" rel="noreferrer">
               udio.com
@@ -824,22 +845,47 @@
               suno.ai
             </a>
             <p class="stack-item-desc">
-              Generate background music, podcast idents, and sonic branding from
-              text prompts.
+              Generate background music, podcast idents, and sonic branding from text prompts to enhance content with professional audio.
+            </p>
+          </div>
+        </div>
+
+        <div class="why-matters">
+          <strong>Why this matters:</strong> Content creation bottlenecks kill momentum—these tools transform ideas into professional assets instantly, maintaining quality at scale.
+        </div>
+
+        <!-- Workflow Tools -->
+        <div class="tool-category">
+          <h3>For workflows</h3>
+          <p>Automating the connections between systems to create repeatable, scalable marketing operations.</p>
+        </div>
+
+        <div class="stack-grid">
+          <div class="stack-item">
+            <div class="stack-item-role">Process automation</div>
+            <div class="stack-item-title">Make.com</div>
+            <a href="https://www.make.com" target="_blank" rel="noreferrer">
+              make.com
+            </a>
+            <p class="stack-item-desc">
+              Connect forms, events, CRM, and AI services into repeatable no-code workflows that eliminate manual busywork.
             </p>
           </div>
 
           <div class="stack-item">
-            <div class="stack-item-role">CRM and funnel</div>
-            <div class="stack-item-title">HubSpot (or similar CRM)</div>
+            <div class="stack-item-role">CRM & pipeline management</div>
+            <div class="stack-item-title">HubSpot</div>
             <a href="https://www.hubspot.com" target="_blank" rel="noreferrer">
               hubspot.com
             </a>
             <p class="stack-item-desc">
-              Central place to track contacts, deals, scoring, and the full
-              marketing funnel.
+              Central place to track contacts, deals, scoring, and the full marketing funnel with automated workflows and reporting.
             </p>
           </div>
+        </div>
+
+        <div class="why-matters">
+          <strong>Why this matters:</strong> Manual processes create bottlenecks and errors—these tools ensure every lead follows the optimal path to conversion without human intervention.
         </div>
       </section>
 
