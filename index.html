@@ -277,6 +277,35 @@
       font-size: 0.78rem;
     }
 
+    .copy-btn {
+      position: absolute;
+      top: 12px;
+      right: 12px;
+      background: none;
+      border: none;
+      color: var(--muted);
+      cursor: pointer;
+      font-size: 16px;
+      padding: 4px;
+      border-radius: 4px;
+      transition: all 0.2s ease;
+      opacity: 0.7;
+    }
+
+    .copy-btn:hover {
+      opacity: 1;
+      background: rgba(52, 195, 255, 0.1);
+      color: var(--accent);
+    }
+
+    .copy-btn.copied {
+      color: #4ade80;
+    }
+
+    .prompt-card {
+      position: relative;
+    }
+
     pre {
       margin: 10px 0 0;
       padding: 10px 10px 10px;
@@ -1014,6 +1043,7 @@
           <div class="prompt-card">
             <h3>Universal prompt structure</h3>
             <small>Use this to brief any AI model with clarity.</small>
+            <button class="copy-btn" onclick="copyToClipboard(this)" title="Copy prompt">📋</button>
             <pre><code>CONTEXT: [Explain what we are trying to do and for whom.]
 
 ROLE: [Specify the expertise or persona the AI should adopt.]
@@ -1043,6 +1073,7 @@ OUTPUT FORMAT:
           <div class="prompt-card">
             <h3>Job to be done discovery</h3>
             <small>Clarify why buyers actually hire your product.</small>
+            <button class="copy-btn" onclick="copyToClipboard(this)" title="Copy prompt">📋</button>
             <pre><code>"Here is my product:
 [Paste a short description of your actual product.]
 
@@ -1068,6 +1099,7 @@ user's perspective in one short sentence."</code></pre>
           <div class="prompt-card">
             <h3>Pain intensity clusters</h3>
             <small>Turn vague personas into high intent segments.</small>
+            <button class="copy-btn" onclick="copyToClipboard(this)" title="Copy prompt">📋</button>
             <pre><code>"Using the jobs to be done we just defined, identify 8 to 10
 user groups who experience this job most intensely.
 
@@ -1084,6 +1116,7 @@ Return your answer as a table with columns:
           <div class="prompt-card">
             <h3>Deep search prompt - AI text to audio tools</h3>
             <small>Example used for the VoiceStream market study.</small>
+            <button class="copy-btn" onclick="copyToClipboard(this)" title="Copy prompt">📋</button>
             <pre><code>"You are an AI powered competitive intelligence analyst.
 
 Your task is to run a comprehensive market study on software
@@ -1116,8 +1149,7 @@ Structure the report in four parts:
           <p class="lead">
             The Value Proposition Engine turns a short product description into a
             full value mapping report: customer jobs, pains, gains, buying
-            triggers, and a LinkedIn ready prospect universe. It is built on
-            Strategizer style value mapping and jobs to be done.
+            triggers, and a LinkedIn ready prospect universe.
           </p>
           <div class="cta-actions">
             <a
@@ -1127,12 +1159,6 @@ Structure the report in four parts:
               rel="noreferrer"
             >
               Open the Value Proposition Engine
-            </a>
-            <a
-              class="btn btn-ghost"
-              href="mailto:stan@nytromarketing.com?subject=Nytro%20Value%20Proposition%20Engine%20feedback"
-            >
-              Share feedback on the tool
             </a>
           </div>
           <p class="cta-meta">
@@ -1225,6 +1251,46 @@ Structure the report in four parts:
   <!-- Scripts -->
   <!-- Configuration will be loaded via API -->
   <script>
+    // Copy to clipboard functionality
+    function copyToClipboard(button) {
+      const promptCard = button.closest('.prompt-card');
+      const codeElement = promptCard.querySelector('pre code');
+
+      if (codeElement) {
+        const textToCopy = codeElement.textContent;
+
+        navigator.clipboard.writeText(textToCopy).then(() => {
+          // Visual feedback
+          button.textContent = '✓';
+          button.classList.add('copied');
+
+          setTimeout(() => {
+            button.textContent = '📋';
+            button.classList.remove('copied');
+          }, 2000);
+        }).catch(err => {
+          console.error('Failed to copy: ', err);
+          // Fallback for older browsers
+          const textArea = document.createElement('textarea');
+          textArea.value = textToCopy;
+          document.body.appendChild(textArea);
+          textArea.select();
+          try {
+            document.execCommand('copy');
+            button.textContent = '✓';
+            button.classList.add('copied');
+            setTimeout(() => {
+              button.textContent = '📋';
+              button.classList.remove('copied');
+            }, 2000);
+          } catch (fallbackErr) {
+            console.error('Fallback copy failed: ', fallbackErr);
+          }
+          document.body.removeChild(textArea);
+        });
+      }
+    }
+
     class EmailOverlay {
       constructor() {
         this.overlay = document.getElementById('email-overlay');
