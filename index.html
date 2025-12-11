@@ -613,6 +613,27 @@
         height: 250px;
       }
     }
+
+    /* Presentation Section */
+    .presentation-section {
+      margin-bottom: 32px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    .presentation-container {
+      width: 100%;
+      max-width: 800px;
+      border-radius: var(--radius-lg);
+      overflow: hidden;
+      border: 1px solid var(--border);
+      background: rgba(5, 7, 14, 0.8);
+    }
+
+    .presentation-container iframe {
+      border: none;
+    }
   </style>
 </head>
 <body>
@@ -702,14 +723,28 @@
       </div>
     </section>
 
+    <!-- Presentation Slides -->
+    <section id="presentation-slides" class="presentation-section">
+      <p class="pill-label">Presentation slides</p>
+      <h2>AI as Your Marketing Engine: Build, Personalize, and Scale B2B Campaigns</h2>
+      <p class="lead">
+        Access the full slide deck from the session with detailed frameworks, AI tool recommendations, and strategic workflows you can implement immediately.
+      </p>
+      <div class="presentation-container">
+        <div style="position:relative;width:100%;height:0;padding-bottom:56.25%;"><iframe allow="clipboard-write" allowfullscreen style="position:absolute; width: 100%; height: 100%;border: solid 1px #333;" src="https://www.beautiful.ai/embed/-OgDjy5K_JRodhxhfeDL?utm_source=beautiful_player&utm_medium=embed&utm_campaign=-OevWO1Rbdhkpi4cMg8k"></iframe><a href="https://www.beautiful.ai/embed/-OgDjy5K_JRodhxhfeDL?utm_source=beautiful_player&utm_medium=embed&utm_campaign=-OevWO1Rbdhkpi4cMg8k">View AI as Your Marketing Engine: Build, Personalize, and Scale B2B Campaigns on Beautiful.ai</a></div>
+      </div>
+    </section>
+
     <nav aria-label="Section navigation">
       <ul>
+        <li><a href="#presentation-slides">Presentation slides</a></li>
         <li><a href="#overview">Overview</a></li>
         <li><a href="#market-definition">Market definition</a></li>
         <li><a href="#ai-stack">Strategic toolkit</a></li>
         <li><a href="#prompts">Prompt library</a></li>
         <li><a href="#nytro-vp">Nytro Value Proposition Engine</a></li>
         <li><a href="#extras">Prospecting and content tools</a></li>
+        <li><a href="#newsletter">Newsletter & Podcast</a></li>
       </ul>
     </nav>
 
@@ -1208,6 +1243,38 @@ Structure the report in four parts:
         </p>
       </section>
     </main>
+
+    <!-- Newsletter Section -->
+    <section id="newsletter" style="margin-bottom: 40px;">
+      <p class="pill-label">Stay updated</p>
+      <h2>AI in Marketing Newsletter & Podcast</h2>
+      <p class="lead">
+        Get your daily dose of AI, tech, and marketing insights—curated by Stan Berteloot and delivered as both a LinkedIn newsletter and podcast.
+      </p>
+      <div class="cta">
+        <div class="cta-actions">
+          <a
+            class="btn btn-primary"
+            href="https://www.linkedin.com/build-relation/newsletter-follow?entityUrn=7258096364646027264"
+            target="_blank"
+            rel="noreferrer"
+          >
+            Subscribe on LinkedIn
+          </a>
+          <a
+            class="btn btn-ghost"
+            href="https://ai-in-marketing.transistor.fm/"
+            target="_blank"
+            rel="noreferrer"
+          >
+            Listen to Podcast
+          </a>
+        </div>
+        <p class="cta-meta">
+          Fresh episodes every weekday at 2 a.m. EST • Powered by VoiceStream
+        </p>
+      </div>
+    </section>
 
     <!-- Contact Section -->
     <section id="contact" style="margin-bottom: 40px;">

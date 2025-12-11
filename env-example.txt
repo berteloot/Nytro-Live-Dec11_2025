@@ -1,4 +1,4 @@
-# HubSpot API Configuration
+Now please create a prompt for Suno to write the background music of a short video teaser inviting people to attend the live session. It should be engaging, dynamic, electronic, fun, and yet full of anticipation. AI, electronic punk.# HubSpot API Configuration
 HUBSPOT_API_KEY=your_hubspot_api_key_here
 
 # Server Configuration (Render sets PORT automatically)
